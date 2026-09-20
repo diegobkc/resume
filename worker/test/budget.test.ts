@@ -18,10 +18,10 @@ class FakeKV implements KVLike {
 }
 
 describe('estimateCostUsd', () => {
-  it('estimates cost from Haiku per-token pricing', () => {
-    // 1000 input tokens + 1000 output tokens, at $0.25/$1.25 per million tokens
+  it('estimates cost from Haiku 4.5 per-token pricing', () => {
+    // 1000 input tokens + 1000 output tokens, at $1.00/$5.00 per million tokens
     const cost = estimateCostUsd(1000, 1000)
-    expect(cost).toBeCloseTo(0.0015, 6)
+    expect(cost).toBeCloseTo(0.006, 6)
   })
 })
 

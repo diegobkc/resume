@@ -1,13 +1,13 @@
 import type { KVLike } from './kv'
 import { secondsUntilUtcMidnight } from './time'
 
-// Pricing constants are Claude Haiku's per-token rate at time of writing —
-// verify against current published Anthropic pricing before relying on this
-// for real budget enforcement, and update the constants if pricing has
-// changed.
+// Pricing constants are Claude Haiku 4.5's per-token rate ($1.00/$5.00 per
+// million tokens) at time of writing — verify against current published
+// Anthropic pricing before relying on this for real budget enforcement, and
+// update the constants if pricing has changed.
 const DEFAULT_DAILY_BUDGET_USD = 2.0
-const INPUT_COST_PER_TOKEN = 0.25 / 1_000_000
-const OUTPUT_COST_PER_TOKEN = 1.25 / 1_000_000
+const INPUT_COST_PER_TOKEN = 1.0 / 1_000_000
+const OUTPUT_COST_PER_TOKEN = 5.0 / 1_000_000
 
 export function estimateCostUsd(inputTokens: number, outputTokens: number): number {
   return inputTokens * INPUT_COST_PER_TOKEN + outputTokens * OUTPUT_COST_PER_TOKEN
