@@ -24,10 +24,14 @@ export function slugifyGroupName(name: string): string {
   )
 }
 
+const CARD_LINK_TOOLTIP_DEFAULT = 'Copy link to this project'
+const CARD_LINK_TOOLTIP_COPIED = 'Link copied!'
+
 function createCardLinkButton(anchorId: string, hook: string): HTMLButtonElement {
   const button = el('button', 'project-card-link-button')
   button.type = 'button'
   button.setAttribute('aria-label', `Copy link to “${hook}”`)
+  button.title = CARD_LINK_TOOLTIP_DEFAULT
 
   const glyph = el('span')
   glyph.setAttribute('aria-hidden', 'true')
@@ -38,9 +42,11 @@ function createCardLinkButton(anchorId: string, hook: string): HTMLButtonElement
     const url = `${location.origin}${location.pathname}#${anchorId}`
     const showCopiedFeedback = () => {
       button.classList.add('project-card-link-button-copied')
+      button.title = CARD_LINK_TOOLTIP_COPIED
       glyph.textContent = '✓'
       window.setTimeout(() => {
         button.classList.remove('project-card-link-button-copied')
+        button.title = CARD_LINK_TOOLTIP_DEFAULT
         glyph.textContent = '🔗'
       }, 1500)
     }
