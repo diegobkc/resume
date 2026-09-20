@@ -26,4 +26,9 @@ describe('session tokens', () => {
   it('rejects a malformed token', async () => {
     expect(await verifySessionToken('test-secret', 'not-a-real-token', Date.now())).toBe(false)
   })
+
+  it('rejects a token with a signature of the wrong length without throwing', async () => {
+    const now = Date.parse('2026-09-20T12:00:00Z')
+    expect(await verifySessionToken('test-secret', `${now}.abc`, now + 1000)).toBe(false)
+  })
 })

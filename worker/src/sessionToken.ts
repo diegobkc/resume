@@ -1,3 +1,12 @@
+function timingSafeEqualHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  let mismatch = 0
+  for (let i = 0; i < a.length; i++) {
+    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  }
+  return mismatch === 0
+}
+
 async function hmacHex(secret: string, message: string): Promise<string> {
   const key = await crypto.subtle.importKey(
     'raw',
@@ -34,5 +43,5 @@ export async function verifySessionToken(
   if (nowMs < issuedAtMs) return false
 
   const expectedSignature = await hmacHex(secret, issuedAtStr)
-  return expectedSignature === signature
+  return timingSafeEqualHex(expectedSignature, signature)
 }
