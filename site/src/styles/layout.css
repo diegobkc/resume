@@ -212,6 +212,7 @@
   border-radius: 6px;
   padding: 14px;
   background: var(--blueprint-surface);
+  scroll-margin-top: 16px;
 }
 
 .project-card-icon {
@@ -219,9 +220,38 @@
   margin-bottom: 8px;
 }
 
+.project-card-hook-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
 .project-card-hook {
   font-size: 14px;
-  margin: 0 0 8px;
+  margin: 0;
+  color: var(--blueprint-accent-strong);
+}
+
+.project-card-link-button {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--blueprint-ink-muted);
+  font-size: 13px;
+  line-height: 1;
+  padding: 2px 4px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.project-card-link-button:hover,
+.project-card-link-button:focus-visible {
+  background: var(--blueprint-grid-line);
+}
+
+.project-card-link-button-copied {
   color: var(--blueprint-accent-strong);
 }
 

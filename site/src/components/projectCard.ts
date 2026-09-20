@@ -24,8 +24,42 @@ export function slugifyGroupName(name: string): string {
   )
 }
 
+function createCardLinkButton(anchorId: string, hook: string): HTMLButtonElement {
+  const button = el('button', 'project-card-link-button')
+  button.type = 'button'
+  button.setAttribute('aria-label', `Copy link to “${hook}”`)
+
+  const glyph = el('span')
+  glyph.setAttribute('aria-hidden', 'true')
+  glyph.textContent = '🔗'
+  button.appendChild(glyph)
+
+  button.addEventListener('click', () => {
+    const url = `${location.origin}${location.pathname}#${anchorId}`
+    const showCopiedFeedback = () => {
+      button.classList.add('project-card-link-button-copied')
+      glyph.textContent = '✓'
+      window.setTimeout(() => {
+        button.classList.remove('project-card-link-button-copied')
+        glyph.textContent = '🔗'
+      }, 1500)
+    }
+
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(url).then(showCopiedFeedback).catch(() => {
+        location.hash = anchorId
+      })
+    } else {
+      location.hash = anchorId
+    }
+  })
+
+  return button
+}
+
 export function renderProjectCard(project: ProjectCard): HTMLElement {
   const card = el('article', 'project-card')
+  card.id = `project-${project.id}`
 
   const icon = document.createElement('img')
   icon.src = project.icon
@@ -34,8 +68,10 @@ export function renderProjectCard(project: ProjectCard): HTMLElement {
   icon.width = 40
   icon.height = 40
 
+  const hookRow = el('div', 'project-card-hook-row')
   const hook = el('h3', 'project-card-hook')
   hook.textContent = project.hook
+  hookRow.append(hook, createCardLinkButton(card.id, project.hook))
 
   const list = el('ul', 'project-card-facts')
   for (const fact of project.facts) {
@@ -44,7 +80,7 @@ export function renderProjectCard(project: ProjectCard): HTMLElement {
     list.appendChild(item)
   }
 
-  card.append(icon, hook, list)
+  card.append(icon, hookRow, list)
   return card
 }
 
