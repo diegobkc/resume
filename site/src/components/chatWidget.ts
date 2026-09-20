@@ -58,8 +58,10 @@ export function createChatWidget(): HTMLElement {
   const toggleBar = el('button', 'chat-toggle-bar')
   toggleBar.type = 'button'
   toggleBar.textContent = 'Ask me anything about Brian’s work ↑'
+  toggleBar.setAttribute('aria-expanded', 'false')
   toggleBar.addEventListener('click', () => {
-    root.classList.toggle('chat-widget-expanded')
+    const isExpanded = root.classList.toggle('chat-widget-expanded')
+    toggleBar.setAttribute('aria-expanded', String(isExpanded))
   })
 
   const messages = el('div', 'chat-messages')
