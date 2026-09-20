@@ -1,7 +1,7 @@
 // site/src/data/projects.ts
 export interface ProjectCard {
   id: string
-  group: 'DH Pace — Application Integration & Systems' | 'DFPP LLC' | 'Volunteer'
+  group: 'DHPace — Application Integration & Systems' | 'DFPP LLC' | 'Volunteer'
   icon: string
   hook: string
   facts: string[]
@@ -10,7 +10,7 @@ export interface ProjectCard {
 export const PROJECTS: ProjectCard[] = [
   {
     id: 'ais-overview',
-    group: 'DH Pace — Application Integration & Systems',
+    group: 'DHPace — Application Integration & Systems',
     icon: '/resume/icons/ais-overview.svg',
     hook: 'Leading the systems that run on trust.',
     facts: [
@@ -22,7 +22,7 @@ export const PROJECTS: ProjectCard[] = [
   },
   {
     id: 'sir',
-    group: 'DH Pace — Application Integration & Systems',
+    group: 'DHPace — Application Integration & Systems',
     icon: '/resume/icons/sir.svg',
     hook: 'Eight commission types, one workflow.',
     facts: [
@@ -34,7 +34,7 @@ export const PROJECTS: ProjectCard[] = [
   },
   {
     id: 'credit-request',
-    group: 'DH Pace — Application Integration & Systems',
+    group: 'DHPace — Application Integration & Systems',
     icon: '/resume/icons/credit-request.svg',
     hook: 'Two ERPs, one credit and refund platform.',
     facts: [
@@ -46,7 +46,7 @@ export const PROJECTS: ProjectCard[] = [
   },
   {
     id: 'vpp',
-    group: 'DH Pace — Application Integration & Systems',
+    group: 'DHPace — Application Integration & Systems',
     icon: '/resume/icons/vpp.svg',
     hook: 'Reverse-engineered an undocumented approval path — then proved it.',
     facts: [
