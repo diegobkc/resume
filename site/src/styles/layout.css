@@ -374,3 +374,67 @@
     box-shadow: 0 0 0 8px rgba(59, 110, 165, 0);
   }
 }
+
+/*
+ * Print styles. Kept in this file (not a separate print.css loaded via a
+ * <link media="print">) deliberately — an earlier attempt at a standalone
+ * print stylesheet measurably regressed Lighthouse's LCP, because Vite's
+ * build reorders <link> tags and the extra stylesheet became an added node
+ * on the critical-path resource graph even as a tiny inlined data: URI.
+ * Being last in this already-loaded file means these rules win the cascade
+ * naturally, with no extra request and no !important needed.
+ */
+@media print {
+  /* Force the light palette regardless of OS dark mode — printing the dark
+     theme would waste toner and often prints poorly on real printers. */
+  :root {
+    --blueprint-bg: #ffffff;
+    --blueprint-grid-line: #dbe6f0;
+    --blueprint-ink: #1a2b3c;
+    --blueprint-ink-muted: #4a5b6c;
+    --blueprint-accent: #3b6ea5;
+    --blueprint-accent-strong: #1e4a75;
+    --blueprint-accent-solid: #3b6ea5;
+    --blueprint-surface: #ffffff;
+  }
+
+  body {
+    background-image: none;
+  }
+
+  /* The chat widget, duck viewer, and group jump-nav are all
+     screen-only interactive affordances with nothing to offer a
+     printed page. */
+  .side-panel,
+  .group-nav {
+    display: none;
+  }
+
+  .page-layout {
+    display: block;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .content-column {
+    width: 100%;
+  }
+
+  .project-card {
+    break-inside: avoid;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .project-card-link-button {
+    display: none;
+  }
+
+  /* Printed paper can't follow a link, so surface the destination as
+     visible text next to it. */
+  a[href]::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: var(--blueprint-ink-muted);
+  }
+}
