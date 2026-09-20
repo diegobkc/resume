@@ -213,6 +213,31 @@
   padding: 14px;
   background: var(--blueprint-surface);
   scroll-margin-top: 16px;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.project-card:hover,
+.project-card:focus-within {
+  border-color: var(--blueprint-accent);
+  box-shadow: 0 2px 8px rgba(59, 110, 165, 0.15);
+  transform: translateY(-2px);
+}
+
+.project-card:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .project-card:hover,
+  .project-card:focus-within,
+  .project-card:active {
+    transform: none;
+  }
 }
 
 .project-card-icon {
