@@ -1,0 +1,43 @@
+:root {
+  --blueprint-bg: #f4f7fb;
+  --blueprint-grid-line: #dbe6f0;
+  --blueprint-ink: #1a2b3c;
+  --blueprint-ink-muted: #4a5b6c;
+  --blueprint-accent: #3b6ea5;
+  --blueprint-accent-strong: #1e4a75;
+  --blueprint-surface: #ffffff;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --grid-size: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--blueprint-ink);
+  background-color: var(--blueprint-bg);
+  background-image:
+    linear-gradient(var(--blueprint-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blueprint-grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+#app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+.fig-label {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--blueprint-accent);
+  text-transform: uppercase;
+}
