@@ -69,6 +69,8 @@
   border-radius: 6px;
   font-size: 13px;
   max-width: 90%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .chat-bubble-user {
@@ -109,6 +111,7 @@
 
 .chat-form input {
   flex: 1;
+  min-width: 0;
   padding: 8px;
   border: 1px solid var(--blueprint-grid-line);
   border-radius: 4px;
@@ -185,6 +188,8 @@
     left: 0;
     right: 0;
     bottom: 0;
+    width: 100%;
+    max-width: 100vw;
     z-index: 50;
     max-height: 60vh;
     border-radius: 8px 8px 0 0;
