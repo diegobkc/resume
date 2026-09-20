@@ -52,6 +52,44 @@ const SUGGESTIONS = [
   'What’s Quack Fortress?',
 ]
 
+const NUDGE_STORAGE_KEY = 'resume-chat-nudge-seen'
+const NUDGE_DELAY_MS = 1600
+const NUDGE_DURATION_MS = 2400
+
+// On mobile the concierge starts collapsed behind a thin toggle bar, which
+// first-time visitors easily miss entirely. This plays a brief, one-time
+// attention pulse on the toggle bar shortly after load — never again once
+// shown (tracked in localStorage), and skipped if the visitor has already
+// opened the widget by the time it would fire.
+function scheduleFirstVisitNudge(
+  root: HTMLElement,
+  toggleBar: HTMLElement,
+  mobileLayoutQuery: MediaQueryList,
+): void {
+  if (!mobileLayoutQuery.matches) return
+
+  let alreadySeen = true
+  try {
+    alreadySeen = window.localStorage.getItem(NUDGE_STORAGE_KEY) === '1'
+  } catch {
+    return
+  }
+  if (alreadySeen) return
+
+  window.setTimeout(() => {
+    if (root.classList.contains('chat-widget-expanded')) return
+    toggleBar.classList.add('chat-toggle-bar-nudge')
+    window.setTimeout(() => {
+      toggleBar.classList.remove('chat-toggle-bar-nudge')
+    }, NUDGE_DURATION_MS)
+    try {
+      window.localStorage.setItem(NUDGE_STORAGE_KEY, '1')
+    } catch {
+      // Best effort — worst case the nudge plays again on a future visit.
+    }
+  }, NUDGE_DELAY_MS)
+}
+
 export function createChatWidget(): HTMLElement {
   const root = el('div', 'chat-widget')
 
@@ -98,6 +136,9 @@ export function createChatWidget(): HTMLElement {
   mobileLayoutQuery.addEventListener('change', () => {
     syncAccessibilityState(root.classList.contains('chat-widget-expanded'))
   })
+
+  scheduleFirstVisitNudge(root, toggleBar, mobileLayoutQuery)
+
   const input = document.createElement('input')
   input.type = 'text'
   input.placeholder = 'Ask me anything about Brian’s work…'

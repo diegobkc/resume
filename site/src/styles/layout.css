@@ -253,4 +253,24 @@
     font-size: 13px;
     cursor: pointer;
   }
+
+  .chat-toggle-bar-nudge {
+    animation: chat-toggle-nudge-pulse 0.8s ease-in-out 3;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chat-toggle-bar-nudge {
+      animation: none;
+      background: var(--blueprint-accent-strong);
+    }
+  }
+}
+
+@keyframes chat-toggle-nudge-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 110, 165, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(59, 110, 165, 0);
+  }
 }
