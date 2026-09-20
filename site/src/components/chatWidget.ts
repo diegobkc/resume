@@ -127,6 +127,22 @@ export function createChatWidget(): HTMLElement {
     return bubble
   }
 
+  function showThinkingIndicator(bubble: HTMLElement): void {
+    bubble.setAttribute('aria-label', 'Thinking')
+    const indicator = el('span', 'chat-thinking')
+    indicator.append(
+      el('span', 'chat-thinking-dot'),
+      el('span', 'chat-thinking-dot'),
+      el('span', 'chat-thinking-dot'),
+    )
+    bubble.appendChild(indicator)
+  }
+
+  function clearThinkingIndicator(bubble: HTMLElement): void {
+    bubble.removeAttribute('aria-label')
+    bubble.replaceChildren()
+  }
+
   async function ensureVerified(): Promise<void> {
     if (hasSession()) return
 
@@ -167,15 +183,22 @@ export function createChatWidget(): HTMLElement {
     input.value = ''
     appendMessage('user', text)
     const assistantBubble = appendMessage('assistant', '')
+    showThinkingIndicator(assistantBubble)
 
     void (async () => {
       try {
         await ensureVerified()
+        let firstChunk = true
         for await (const chunk of streamChatReply(text)) {
+          if (firstChunk) {
+            clearThinkingIndicator(assistantBubble)
+            firstChunk = false
+          }
           assistantBubble.textContent += chunk
           messages.scrollTop = messages.scrollHeight
         }
       } catch (err) {
+        clearThinkingIndicator(assistantBubble)
         assistantBubble.textContent =
           err instanceof Error && err.message
             ? err.message
