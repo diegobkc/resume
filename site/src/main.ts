@@ -1,7 +1,7 @@
 // site/src/main.ts
 import { createChatWidget } from './components/chatWidget'
 import { createDuckViewer } from './components/duckViewer'
-import { renderProjectGroup } from './components/projectCard'
+import { renderProjectGroup, slugifyGroupName } from './components/projectCard'
 import { PROJECTS } from './data/projects'
 
 function el<K extends keyof HTMLElementTagNameMap>(
@@ -35,6 +35,19 @@ function buildHero(): HTMLElement {
   return hero
 }
 
+function buildGroupNav(groupNames: string[]): HTMLElement {
+  const nav = el('nav', 'group-nav')
+  nav.setAttribute('aria-label', 'Jump to a project group')
+  for (const groupName of groupNames) {
+    const link = document.createElement('a')
+    link.href = `#${slugifyGroupName(groupName)}`
+    link.className = 'group-nav-link'
+    link.textContent = groupName
+    nav.appendChild(link)
+  }
+  return nav
+}
+
 function groupProjects() {
   const groups = new Map<string, typeof PROJECTS>()
   for (const project of PROJECTS) {
@@ -55,7 +68,10 @@ if (app) {
   const contentColumn = el('div', 'content-column')
   contentColumn.appendChild(buildHero())
 
-  for (const [groupName, projects] of groupProjects()) {
+  const groups = groupProjects()
+  contentColumn.appendChild(buildGroupNav([...groups.keys()]))
+
+  for (const [groupName, projects] of groups) {
     contentColumn.appendChild(renderProjectGroup(groupName, projects))
   }
 

@@ -174,8 +174,30 @@
   text-align: center;
 }
 
+.group-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.group-nav-link {
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 1px solid var(--blueprint-accent);
+  border-radius: 12px;
+  color: var(--blueprint-accent-strong);
+  text-decoration: none;
+}
+
+.group-nav-link:hover,
+.group-nav-link:focus-visible {
+  background: var(--blueprint-grid-line);
+}
+
 .project-group {
   margin-top: 32px;
+  scroll-margin-top: 16px;
 }
 
 .project-grid {

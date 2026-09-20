@@ -10,6 +10,20 @@ function el<K extends keyof HTMLElementTagNameMap>(
   return node
 }
 
+const COMBINING_DIACRITICS = new RegExp('[\\u0300-\\u036f]', 'g')
+
+export function slugifyGroupName(name: string): string {
+  return (
+    'group-' +
+    name
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(COMBINING_DIACRITICS, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+  )
+}
+
 export function renderProjectCard(project: ProjectCard): HTMLElement {
   const card = el('article', 'project-card')
 
@@ -39,6 +53,7 @@ export function renderProjectGroup(
   projects: ProjectCard[],
 ): HTMLElement {
   const section = el('section', 'project-group')
+  section.id = slugifyGroupName(groupName)
   const heading = el('h2', 'fig-label')
   heading.textContent = groupName
 
