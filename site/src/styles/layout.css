@@ -48,6 +48,13 @@
   display: none;
 }
 
+.chat-widget-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 .chat-messages {
   flex: 1;
   overflow-y: auto;

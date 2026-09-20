@@ -62,17 +62,29 @@ export function createChatWidget(): HTMLElement {
 
   const mobileLayoutQuery = window.matchMedia('(max-width: 860px)')
 
+  const messages = el('div', 'chat-messages')
+  const gate = el('div', 'chat-gate')
+  gate.hidden = true
+
+  const chips = el('div', 'chat-chips')
+  const form = el('form', 'chat-form')
+
+  const contentWrapper = el('div', 'chat-widget-content')
+  contentWrapper.append(messages, chips, gate, form)
+
   function syncAccessibilityState(expanded: boolean): void {
     toggleBar.setAttribute('aria-expanded', String(expanded))
     if (mobileLayoutQuery.matches) {
       // On mobile, the panel is visually off-screen when collapsed —
       // hide it from the accessibility tree too so a screen reader's
-      // virtual cursor doesn't land on stale, invisible content.
-      root.setAttribute('aria-hidden', String(!expanded))
+      // virtual cursor doesn't land on stale, invisible content. This
+      // targets contentWrapper (not root) so toggleBar — the one visible,
+      // interactive element when collapsed — is never itself hidden.
+      contentWrapper.setAttribute('aria-hidden', String(!expanded))
     } else {
       // On desktop the widget is always fully visible regardless of
       // this class, so it must never be hidden from assistive tech here.
-      root.removeAttribute('aria-hidden')
+      contentWrapper.removeAttribute('aria-hidden')
     }
   }
 
@@ -86,13 +98,6 @@ export function createChatWidget(): HTMLElement {
   mobileLayoutQuery.addEventListener('change', () => {
     syncAccessibilityState(root.classList.contains('chat-widget-expanded'))
   })
-
-  const messages = el('div', 'chat-messages')
-  const gate = el('div', 'chat-gate')
-  gate.hidden = true
-
-  const chips = el('div', 'chat-chips')
-  const form = el('form', 'chat-form')
   const input = document.createElement('input')
   input.type = 'text'
   input.placeholder = 'Ask me anything about Brian’s work…'
@@ -178,6 +183,6 @@ export function createChatWidget(): HTMLElement {
     })()
   })
 
-  root.append(toggleBar, messages, chips, gate, form)
+  root.append(toggleBar, contentWrapper)
   return root
 }
