@@ -364,6 +364,18 @@
       background: var(--blueprint-accent-strong);
     }
   }
+
+  /* Bigger tap targets and slightly larger copy for touch — the desktop
+     sizing (11px chips, 12.5px facts) is comfortable with a mouse but
+     tight for a thumb and for reading at arm's length on a phone. */
+  .chat-chip {
+    font-size: 12.5px;
+    padding: 7px 12px;
+  }
+
+  .project-card-facts {
+    font-size: 13.5px;
+  }
 }
 
 @keyframes chat-toggle-nudge-pulse {
