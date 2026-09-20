@@ -52,6 +52,46 @@ const SUGGESTIONS = [
   'What’s Quack Fortress?',
 ]
 
+interface ChatHistoryEntry {
+  role: 'user' | 'assistant'
+  text: string
+}
+
+const HISTORY_STORAGE_KEY = 'resume-chat-history'
+const HISTORY_MAX_MESSAGES = 20
+
+// Persisted in sessionStorage (not localStorage) so a reload or accidental
+// nav-away doesn't lose the conversation, but it still clears when the tab
+// closes rather than following the visitor indefinitely.
+function loadChatHistory(): ChatHistoryEntry[] {
+  try {
+    const raw = window.sessionStorage.getItem(HISTORY_STORAGE_KEY)
+    if (!raw) return []
+    const parsed: unknown = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter(
+      (entry): entry is ChatHistoryEntry =>
+        typeof entry === 'object' &&
+        entry !== null &&
+        (entry as ChatHistoryEntry).role !== undefined &&
+        ((entry as ChatHistoryEntry).role === 'user' ||
+          (entry as ChatHistoryEntry).role === 'assistant') &&
+        typeof (entry as ChatHistoryEntry).text === 'string',
+    )
+  } catch {
+    return []
+  }
+}
+
+function saveChatHistory(history: ChatHistoryEntry[]): void {
+  try {
+    const trimmed = history.slice(-HISTORY_MAX_MESSAGES)
+    window.sessionStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(trimmed))
+  } catch {
+    // Best effort — private browsing or a full quota just means no persistence.
+  }
+}
+
 const NUDGE_STORAGE_KEY = 'resume-chat-nudge-seen'
 const NUDGE_DELAY_MS = 1600
 const NUDGE_DURATION_MS = 2400
@@ -160,12 +200,18 @@ export function createChatWidget(): HTMLElement {
     chips.appendChild(chip)
   }
 
+  const history: ChatHistoryEntry[] = loadChatHistory()
+
   function appendMessage(role: 'user' | 'assistant', text: string): HTMLElement {
     const bubble = el('div', `chat-bubble chat-bubble-${role}`)
     bubble.textContent = text
     messages.appendChild(bubble)
     messages.scrollTop = messages.scrollHeight
     return bubble
+  }
+
+  for (const entry of history) {
+    appendMessage(entry.role, entry.text)
   }
 
   function showThinkingIndicator(bubble: HTMLElement): void {
@@ -223,7 +269,12 @@ export function createChatWidget(): HTMLElement {
     if (!text) return
     input.value = ''
     appendMessage('user', text)
+    history.push({ role: 'user', text })
+    saveChatHistory(history)
+
     const assistantBubble = appendMessage('assistant', '')
+    const assistantEntry: ChatHistoryEntry = { role: 'assistant', text: '' }
+    history.push(assistantEntry)
     showThinkingIndicator(assistantBubble)
 
     void (async () => {
@@ -236,14 +287,18 @@ export function createChatWidget(): HTMLElement {
             firstChunk = false
           }
           assistantBubble.textContent += chunk
+          assistantEntry.text += chunk
           messages.scrollTop = messages.scrollHeight
         }
       } catch (err) {
         clearThinkingIndicator(assistantBubble)
-        assistantBubble.textContent =
+        assistantEntry.text =
           err instanceof Error && err.message
             ? err.message
             : 'Something went wrong — try again in a moment.'
+        assistantBubble.textContent = assistantEntry.text
+      } finally {
+        saveChatHistory(history)
       }
     })()
   })
