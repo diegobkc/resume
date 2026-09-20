@@ -25,13 +25,19 @@ function buildHero(): HTMLElement {
   tagline.textContent =
     'Senior Full-Stack & AI Automation Engineer · Engineering Manager'
 
+  const contact = el('p', 'hero-contact')
+  const emailLink = document.createElement('a')
+  emailLink.href = 'mailto:brian.joneskc01@gmail.com'
+  emailLink.textContent = 'brian.joneskc01@gmail.com'
+  contact.appendChild(emailLink)
+
   const links = el('p')
   const classicLink = document.createElement('a')
   classicLink.href = '/resume/classic/'
   classicLink.textContent = 'View the traditional resume →'
   links.appendChild(classicLink)
 
-  hero.append(label, heading, tagline, links)
+  hero.append(label, heading, tagline, contact, links)
   return hero
 }
 
