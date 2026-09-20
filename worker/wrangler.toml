@@ -1,0 +1,10 @@
+name = "resume-concierge"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+[[kv_namespaces]]
+binding = "RESUME_KV"
+id = "REPLACE_WITH_REAL_KV_NAMESPACE_ID"
+
+[vars]
+ALLOWED_ORIGIN = "https://diegobkc.github.io"
