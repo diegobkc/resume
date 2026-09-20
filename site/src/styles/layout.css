@@ -11,6 +11,29 @@
   margin: 0 auto;
 }
 
+.duck-viewer-container {
+  position: relative;
+}
+
+.duck-viewer-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  transform: translateX(-50%);
+  background: var(--blueprint-accent-solid);
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.duck-viewer-hint-fade {
+  opacity: 0;
+}
+
 .page-layout {
   display: flex;
   gap: 24px;

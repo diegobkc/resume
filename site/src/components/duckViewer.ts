@@ -13,6 +13,61 @@ function createPosterImage(alt: string): HTMLImageElement {
   return img
 }
 
+const DUCK_HINT_STORAGE_KEY = 'resume-duck-hint-seen'
+const DUCK_HINT_DURATION_MS = 4000
+
+interface ModelViewerCameraChangeDetail {
+  source?: string
+}
+
+// Once the duck becomes interactive, nothing about it visually signals that
+// dragging does anything — it just quietly stops being a static image. This
+// briefly auto-rotates it and shows a "drag to rotate" caption, once ever
+// per browser (tracked in localStorage), dismissed early the moment the
+// visitor actually interacts with it.
+function scheduleInteractivityHint(
+  container: HTMLElement,
+  viewer: HTMLElement,
+): void {
+  let alreadySeen = true
+  try {
+    alreadySeen = window.localStorage.getItem(DUCK_HINT_STORAGE_KEY) === '1'
+  } catch {
+    return
+  }
+  if (alreadySeen) return
+
+  viewer.setAttribute('auto-rotate', '')
+
+  const caption = document.createElement('span')
+  caption.className = 'duck-viewer-hint'
+  caption.textContent = '↻ Drag to rotate'
+  container.appendChild(caption)
+
+  let dismissed = false
+  const dismiss = () => {
+    if (dismissed) return
+    dismissed = true
+    viewer.removeAttribute('auto-rotate')
+    caption.classList.add('duck-viewer-hint-fade')
+    window.setTimeout(() => caption.remove(), 400)
+    try {
+      window.localStorage.setItem(DUCK_HINT_STORAGE_KEY, '1')
+    } catch {
+      // Best effort — worst case the hint plays again on a future visit.
+    }
+  }
+
+  viewer.addEventListener('camera-change', (event) => {
+    const detail = (event as CustomEvent<ModelViewerCameraChangeDetail>).detail
+    if (detail?.source === 'user-interaction') {
+      dismiss()
+    }
+  })
+
+  window.setTimeout(dismiss, DUCK_HINT_DURATION_MS)
+}
+
 // The static poster image is the LCP candidate: it paints immediately with
 // no JS dependency. `@google/model-viewer` bundles a stripped three.js and
 // is by far the largest chunk on this page, so it's fetched only after the
@@ -29,6 +84,7 @@ function upgradeToInteractiveViewer(container: HTMLElement): void {
     viewer.setAttribute('disable-zoom', '')
     viewer.className = 'duck-viewer'
     container.replaceChildren(viewer)
+    scheduleInteractivityHint(container, viewer)
   }
 
   if (typeof window.requestIdleCallback === 'function') {
