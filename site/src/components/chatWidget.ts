@@ -101,6 +101,7 @@ export function createChatWidget(): HTMLElement {
   const input = document.createElement('input')
   input.type = 'text'
   input.placeholder = 'Ask me anything about Brian’s work…'
+  input.setAttribute('aria-label', 'Ask me anything about Brian’s work')
   input.maxLength = 500
   const submit = document.createElement('button')
   submit.type = 'submit'
