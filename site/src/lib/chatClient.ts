@@ -53,4 +53,8 @@ export async function* streamChatReply(message: string): AsyncGenerator<string> 
     if (done) break
     yield decoder.decode(value, { stream: true })
   }
+  const remaining = decoder.decode()
+  if (remaining) {
+    yield remaining
+  }
 }
