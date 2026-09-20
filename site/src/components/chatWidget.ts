@@ -59,9 +59,32 @@ export function createChatWidget(): HTMLElement {
   toggleBar.type = 'button'
   toggleBar.textContent = 'Ask me anything about Brian’s work ↑'
   toggleBar.setAttribute('aria-expanded', 'false')
+
+  const mobileLayoutQuery = window.matchMedia('(max-width: 860px)')
+
+  function syncAccessibilityState(expanded: boolean): void {
+    toggleBar.setAttribute('aria-expanded', String(expanded))
+    if (mobileLayoutQuery.matches) {
+      // On mobile, the panel is visually off-screen when collapsed —
+      // hide it from the accessibility tree too so a screen reader's
+      // virtual cursor doesn't land on stale, invisible content.
+      root.setAttribute('aria-hidden', String(!expanded))
+    } else {
+      // On desktop the widget is always fully visible regardless of
+      // this class, so it must never be hidden from assistive tech here.
+      root.removeAttribute('aria-hidden')
+    }
+  }
+
+  syncAccessibilityState(false)
+
   toggleBar.addEventListener('click', () => {
     const isExpanded = root.classList.toggle('chat-widget-expanded')
-    toggleBar.setAttribute('aria-expanded', String(isExpanded))
+    syncAccessibilityState(isExpanded)
+  })
+
+  mobileLayoutQuery.addEventListener('change', () => {
+    syncAccessibilityState(root.classList.contains('chat-widget-expanded'))
   })
 
   const messages = el('div', 'chat-messages')
