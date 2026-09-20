@@ -7,4 +7,4 @@ binding = "RESUME_KV"
 id = "f5abe74ade034ba5a0355bd5b538aaed"
 
 [vars]
-ALLOWED_ORIGIN = "https://diegobkc.github.io"
+ALLOWED_ORIGINS = "https://diegobkc.github.io,http://localhost:5173,http://localhost:4173"

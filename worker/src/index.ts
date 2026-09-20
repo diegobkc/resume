@@ -11,17 +11,26 @@ export interface Env {
   ANTHROPIC_API_KEY: string
   TURNSTILE_SECRET_KEY: string
   SESSION_TOKEN_SECRET: string
-  ALLOWED_ORIGIN: string
+  ALLOWED_ORIGINS: string
 }
 
 const MAX_MESSAGE_CHARS = 500
 const SESSION_MAX_AGE_MS = 2 * 60 * 60 * 1000
+
+function resolveAllowedOrigin(env: Env, requestOrigin: string | null): string {
+  const allowedOrigins = env.ALLOWED_ORIGINS.split(',').map((entry) => entry.trim())
+  if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
+    return requestOrigin
+  }
+  return allowedOrigins[0]
+}
 
 function corsHeaders(origin: string): Record<string, string> {
   return {
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Vary': 'Origin',
   }
 }
 
@@ -35,7 +44,7 @@ function jsonResponse(body: unknown, status: number, origin: string): Response {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url)
-    const origin = env.ALLOWED_ORIGIN
+    const origin = resolveAllowedOrigin(env, request.headers.get('Origin'))
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders(origin) })
