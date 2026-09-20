@@ -340,10 +340,10 @@ class FakeKV implements KVLike {
 }
 
 describe('estimateCostUsd', () => {
-  it('estimates cost from Haiku per-token pricing', () => {
-    // 1000 input tokens + 1000 output tokens, at $0.25/$1.25 per million tokens
+  it('estimates cost from Haiku 4.5 per-token pricing', () => {
+    // 1000 input tokens + 1000 output tokens, at $1.00/$5.00 per million tokens
     const cost = estimateCostUsd(1000, 1000)
-    expect(cost).toBeCloseTo(0.0015, 6)
+    expect(cost).toBeCloseTo(0.006, 6)
   })
 })
 
@@ -390,10 +390,11 @@ Expected: FAIL — `Cannot find module '../src/budget'`.
 
 - [ ] **Step 3: Write the implementation**
 
-Pricing constants are Claude Haiku's per-token rate at time of writing —
-verify against current published Anthropic pricing before relying on this
-for real budget enforcement, and update the constants if pricing has
-changed.
+Pricing constants are Claude Haiku 4.5's per-token rate ($1.00/$5.00 per
+million input/output tokens, confirmed via the claude-api skill's current
+model table) — verify against current published Anthropic pricing before
+relying on this for real budget enforcement, and update the constants if
+pricing has changed since.
 
 ```typescript
 // worker/src/budget.ts
@@ -401,8 +402,8 @@ import type { KVLike } from './kv'
 import { secondsUntilUtcMidnight } from './time'
 
 const DEFAULT_DAILY_BUDGET_USD = 2.0
-const INPUT_COST_PER_TOKEN = 0.25 / 1_000_000
-const OUTPUT_COST_PER_TOKEN = 1.25 / 1_000_000
+const INPUT_COST_PER_TOKEN = 1.0 / 1_000_000
+const OUTPUT_COST_PER_TOKEN = 5.0 / 1_000_000
 
 export function estimateCostUsd(inputTokens: number, outputTokens: number): number {
   return inputTokens * INPUT_COST_PER_TOKEN + outputTokens * OUTPUT_COST_PER_TOKEN
@@ -1010,7 +1011,7 @@ export default {
       const readable = new ReadableStream<Uint8Array>({
         async start(controller) {
           const stream = client.messages.stream({
-            model: 'claude-haiku-4-5-20251001',
+            model: 'claude-haiku-4-5',
             max_tokens: 300,
             system: buildSystemPrompt(),
             messages: [{ role: 'user', content: message }],
