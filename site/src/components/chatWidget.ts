@@ -24,15 +24,23 @@ function el<K extends keyof HTMLElementTagNameMap>(
 }
 
 function waitForTurnstile(): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (window.turnstile) {
       resolve()
       return
     }
+    let attempts = 0
+    const maxAttempts = 50 // ~5 seconds at 100ms intervals
     const check = window.setInterval(() => {
       if (window.turnstile) {
         window.clearInterval(check)
         resolve()
+        return
+      }
+      attempts += 1
+      if (attempts >= maxAttempts) {
+        window.clearInterval(check)
+        reject(new Error('Verification failed to load — please refresh and try again.'))
       }
     }, 100)
   })
