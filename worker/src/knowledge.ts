@@ -125,9 +125,8 @@ Software Development Team Lead, Polsinelli PC (2013–2019): managed the
 development lifecycle for client-facing and internal SharePoint/K2
 applications in a legal enterprise environment.
 
-Earlier and contract roles (2004–2018): K2 development, SharePoint
-architecture, and database administration across Brazeway, Focused
-Management, ScriptPro, Aptuit, and WSS.
+Earlier and contract roles (2011–2018): K2 development and SharePoint
+delivery across Brazeway, Focused Management, and ScriptPro.
 
 == CORE TECHNICAL SKILLS ==
 
