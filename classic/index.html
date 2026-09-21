@@ -158,5 +158,18 @@ Full-stack engineer and engineering manager with 20+ years building enterprise b
   <div><b>Certifications:</b> K2 4.7 / K2 Five (Core, SmartForms, Workflow, Admin); Lean Six Sigma Green Belt; ITIL Foundation; Alkami SDK Dev; ASP.NET MVC / Full-Stack Web Dev; Jira &amp; Agile Methodologies</div>
 </div>
 
+<script>
+  // Fire-and-forget usage counter — no cookies, no IP storage, just an
+  // aggregate daily count so Brian can see interactive-vs-classic split.
+  try {
+    fetch('https://resume-concierge.brian-joneskc01.workers.dev/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event: 'page_view_classic' }),
+      keepalive: true,
+    }).catch(function () {})
+  } catch (e) {}
+</script>
+
 </body>
 </html>

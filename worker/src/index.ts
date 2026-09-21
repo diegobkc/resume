@@ -5,6 +5,7 @@ import { isBudgetExceeded, recordSpend, estimateCostUsd } from './budget'
 import { verifyTurnstileToken } from './turnstile'
 import { issueSessionToken, verifySessionToken } from './sessionToken'
 import { buildSystemPrompt } from './systemPrompt'
+import { recordEvent, getStats, isTrackableEvent, TRACKABLE_EVENTS } from './analytics'
 
 export interface Env {
   RESUME_KV: KVNamespace
@@ -12,6 +13,7 @@ export interface Env {
   TURNSTILE_SECRET_KEY: string
   SESSION_TOKEN_SECRET: string
   ALLOWED_ORIGINS: string
+  STATS_SECRET: string
 }
 
 const MAX_MESSAGE_CHARS = 500
@@ -40,6 +42,18 @@ function jsonResponse(body: unknown, status: number, origin: string): Response {
     headers: { 'content-type': 'application/json', ...corsHeaders(origin) },
   })
 }
+
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  let mismatch = 0
+  for (let i = 0; i < a.length; i++) {
+    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  }
+  return mismatch === 0
+}
+
+const DEFAULT_STATS_DAYS = 30
+const MAX_STATS_DAYS = 90
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -157,6 +171,28 @@ export default {
       return new Response(readable, {
         headers: { 'content-type': 'text/plain; charset=utf-8', ...corsHeaders(origin) },
       })
+    }
+
+    if (url.pathname === '/api/track' && request.method === 'POST') {
+      const { event } = (await request.json().catch(() => ({}))) as { event?: string }
+      if (!event || !isTrackableEvent(event)) {
+        return jsonResponse({ error: 'unknown event' }, 400, origin)
+      }
+      await recordEvent(env.RESUME_KV, event)
+      return jsonResponse({ ok: true }, 200, origin)
+    }
+
+    if (url.pathname === '/api/stats' && request.method === 'GET') {
+      const secret = url.searchParams.get('secret') ?? ''
+      if (!env.STATS_SECRET || !timingSafeEqual(secret, env.STATS_SECRET)) {
+        return jsonResponse({ error: 'unauthorized' }, 401, origin)
+      }
+      const requestedDays = Number(url.searchParams.get('days'))
+      const days = Number.isFinite(requestedDays) && requestedDays > 0
+        ? Math.min(requestedDays, MAX_STATS_DAYS)
+        : DEFAULT_STATS_DAYS
+      const stats = await getStats(env.RESUME_KV, [...TRACKABLE_EVENTS], days)
+      return jsonResponse({ days, stats }, 200, origin)
     }
 
     return jsonResponse({ error: 'not found' }, 404, origin)

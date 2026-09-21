@@ -1,5 +1,6 @@
 // site/src/components/projectCard.ts
 import type { ProjectCard } from '../data/projects'
+import { track } from '../lib/analytics'
 
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -41,6 +42,7 @@ function createCardLinkButton(anchorId: string, hook: string): HTMLButtonElement
   button.addEventListener('click', () => {
     const url = `${location.origin}${location.pathname}#${anchorId}`
     const showCopiedFeedback = () => {
+      track('card_link_copied')
       button.classList.add('project-card-link-button-copied')
       button.title = CARD_LINK_TOOLTIP_COPIED
       glyph.textContent = '✓'

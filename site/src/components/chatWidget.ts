@@ -1,5 +1,6 @@
 // site/src/components/chatWidget.ts
 import { hasSession, verifySession, streamChatReply } from '../lib/chatClient'
+import { track } from '../lib/analytics'
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAEiUFZkjq8Okehej'
 
@@ -271,6 +272,7 @@ export function createChatWidget(): HTMLElement {
     appendMessage('user', text)
     history.push({ role: 'user', text })
     saveChatHistory(history)
+    track('chat_message')
 
     const assistantBubble = appendMessage('assistant', '')
     const assistantEntry: ChatHistoryEntry = { role: 'assistant', text: '' }
