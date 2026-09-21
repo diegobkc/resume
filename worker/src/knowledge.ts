@@ -6,11 +6,10 @@
 // resume changes; it does not auto-sync.
 
 export const KNOWLEDGE_BASE = `
-BRIAN JONES — Senior Full-Stack & AI Automation Engineer / Engineering Manager
+BRIAN JONES — Engineering Manager · AI-Augmented Enterprise Delivery
 Belton, MO. Contact: brian.joneskc01@gmail.com, github.com/diegobkc, dfppagency.com.
-20+ years building enterprise business applications, from SharePoint/K2/Oracle
-APEX with Boomi and Oracle Integration Cloud integrations, to modern
-TypeScript SaaS.
+15+ years leading enterprise application teams, from SharePoint/K2/Oracle APEX
+platforms to modern TypeScript SaaS.
 
 == DH PACE COMPANY — Business Analyst Manager, Application & Integration
    Services (AIS) team. Oct 2022–Present, Belton, MO. ==

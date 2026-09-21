@@ -12,8 +12,7 @@ export function buildHero(): HTMLElement {
   heading.textContent = 'Brian Jones'
 
   const tagline = el('p')
-  tagline.textContent =
-    'Senior Full-Stack & AI Automation Engineer · Engineering Manager'
+  tagline.textContent = 'Engineering Manager · AI-Augmented Enterprise Delivery'
 
   const contact = el('p', 'hero-contact')
   const emailLink = document.createElement('a')
