@@ -4,15 +4,7 @@ import { createDuckViewer } from './components/duckViewer'
 import { renderProjectGroup, slugifyGroupName } from './components/projectCard'
 import { PROJECTS } from './data/projects'
 import { track } from './lib/analytics'
-
-function el<K extends keyof HTMLElementTagNameMap>(
-  tag: K,
-  className?: string,
-): HTMLElementTagNameMap[K] {
-  const node = document.createElement(tag)
-  if (className) node.className = className
-  return node
-}
+import { el } from './lib/dom'
 
 function buildHero(): HTMLElement {
   const hero = el('div')

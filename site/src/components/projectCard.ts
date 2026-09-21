@@ -1,15 +1,7 @@
 // site/src/components/projectCard.ts
 import type { ProjectCard } from '../data/projects'
 import { track } from '../lib/analytics'
-
-function el<K extends keyof HTMLElementTagNameMap>(
-  tag: K,
-  className?: string,
-): HTMLElementTagNameMap[K] {
-  const node = document.createElement(tag)
-  if (className) node.className = className
-  return node
-}
+import { el } from '../lib/dom'
 
 const COMBINING_DIACRITICS = new RegExp('[\\u0300-\\u036f]', 'g')
 
