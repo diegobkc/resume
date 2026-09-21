@@ -27,7 +27,7 @@ export const PROJECTS: ProjectCard[] = [
     hook: 'Eight commission types, one workflow.',
     facts: [
       'Replaced a manual, spreadsheet-driven commission audit process.',
-      '4-stage, AD-role-gated approval: a role-gated chain.',
+      'A multi-stage, role-gated approval workflow, from initial audit through final approval.',
       'Batch toolbar actions let reviewers act on multiple records at once, across eight commission line types.',
       'React/TypeScript, MUI X Data Grid, Oracle APEX ORDS, Entra ID SSO.',
     ],
@@ -38,8 +38,8 @@ export const PROJECTS: ProjectCard[] = [
     icon: '/resume/icons/credit-request.svg',
     hook: 'Two ERPs, one credit and refund platform.',
     facts: [
-      'A 3-phase, ~263-story-point initiative unifying two ERP systems' credit/refund handling.',
-      'Configurable 5-stage, dollar-threshold approval workflow.',
+      'A 3-phase, ~263-story-point initiative unifying two ERP systems’ credit/refund handling.',
+      'Configurable, multi-stage, dollar-threshold-gated approval workflow.',
       'Automatic org-hierarchy-based approver assignment.',
       'SOAP integration with the ERP auto-populates invoice data.',
     ],
@@ -53,7 +53,7 @@ export const PROJECTS: ProjectCard[] = [
       'Migrated off a legacy Nintex/SharePoint approval process.',
       'A data-driven, location-based approver-matching algorithm replaced hard-coded Nintex logic.',
       '25+ script SQL migration history, Playwright end-to-end test coverage.',
-      'Passed a pre-deployment security audit: strong marks across security and code quality, "GO" recommendation.',
+      'Passed a pre-deployment security audit with strong marks across security and code quality, "GO" recommendation.',
     ],
   },
   {

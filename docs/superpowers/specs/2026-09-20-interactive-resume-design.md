@@ -162,9 +162,9 @@ structure:
 
 **DH Pace — Business Analyst Manager, AIS**
 1. The AIS team/role overview (leadership, AI-assisted delivery methodology)
-2. Salesperson Incentive Review (SIR)
-3. Credit Request (the platform)
-4. Vendor PrePayment (VPP)
+2. Commission Audit & Approval System
+3. Credit & Refund Platform
+4. Vendor Pre-Payment Approval System
 
 **DFPP LLC**
 5. GarageLink

@@ -722,43 +722,38 @@ and executive summaries.
 
 Flagship AIS projects:
 
-- Salesperson Incentive Review (SIR): replaced a manual, spreadsheet-driven
-  commission audit process with a 4-stage, AD-role-gated approval workflow
-  (a role-gated chain) spanning eight distinct
-  commission line types, plus batch toolbar actions letting a reviewer act
-  on multiple records at once instead of one at a time. Built with
+- A commission audit and approval system: replaced a manual,
+  spreadsheet-driven commission audit process with a multi-stage,
+  role-gated approval workflow spanning eight distinct commission line
+  types, plus batch toolbar actions letting a reviewer act on multiple
+  records at once instead of one at a time. Built with
   React/TypeScript, MUI X Data Grid, Node/Express, Oracle APEX ORDS, SQL
   Server, and Microsoft Entra ID SSO, with a self-hosted GitHub Actions
   CI/CD pipeline per environment (Dev, UAT, Production).
 
-- Credit Request (internally called the platform): a unified the ERP/the ERP credit-and-
-  refund platform replacing a disconnected process of SharePoint forms and
-  email chains. Scoped as a 3-phase, roughly 263-story-point initiative
-  (three internal phases) with a full
-  requirements traceability matrix. Features a configurable 5-stage
-  approval workflow (a multi-tier management chain
-  ) with dollar-threshold-gated routing (
-  General Manager review) and automatic org-hierarchy-based approver
-  assignment. Integrates with the ERP via SOAP for automatic invoice
-  auto-population.
+- A credit-and-refund platform: unified two disconnected ERP systems'
+  credit and refund handling, replacing a manual chain of SharePoint forms
+  and email approvals. Scoped as a 3-phase, roughly 263-story-point
+  initiative with a full requirements traceability matrix. Features a
+  configurable, multi-stage, dollar-threshold-gated approval workflow and
+  automatic org-hierarchy-based approver assignment. Integrates with the
+  ERP via SOAP for automatic invoice auto-population.
 
-- Vendor PrePayment (VPP): migrated DH Pace's vendor pre-payment approval
-  process off a legacy Nintex/SharePoint workflow onto a custom-built
-  application. Brian reverse-engineered an undocumented legacy approval path into a
-  data-driven, location-based approver-matching algorithm (matching by
-  company and location against an approvers table, supporting up to
-  three levels of sign-off) — replacing Nintex's hard-coded logic with
-  configurable database rules. Delivered with a 25+ script SQL migration
-  history and a Playwright end-to-end test suite. The application passed a
-  formal pre-deployment security and code-quality audit with scores of
-  strong marks across security, code quality, and production
-  readiness), receiving a "GO" recommendation and clearing nearly all OWASP
-  Top 10 categories outright.
+- A vendor pre-payment approval system: migrated DH Pace's vendor
+  pre-payment approval process off a legacy Nintex/SharePoint workflow onto
+  a custom-built application. Brian reverse-engineered an undocumented
+  legacy approval path into a data-driven, location-based approver-matching
+  algorithm, replacing hard-coded logic with configurable database rules.
+  Delivered with a 25+ script SQL migration history and a Playwright
+  end-to-end test suite. The application passed a formal pre-deployment
+  security and code-quality audit with strong marks across security, code
+  quality, and production readiness, receiving a "GO" recommendation and
+  clearing nearly all OWASP Top 10 categories outright.
 
-- field-payment processing: a proof-of-concept application automating
-  collection and submission of technician-collected field payments (card
-  and check) on ERP work orders, via a secure proxy layer to the ERP's
-  the ERP's payment API API with rate limiting and full audit logging.
+- A field-payment processing proof of concept: automated collection and
+  submission of technician-collected field payments (card and check), via
+  a secure, rate-limited proxy layer to the ERP's payment API, with full
+  audit logging.
 
 == DFPP LLC — Founder & Principal Engineer. 2025–Present, Kansas City, MO. ==
 
